@@ -60,7 +60,16 @@ public class RepositorioLecturas {
      * VERSION INGENUA: revisala con cuidado antes de confiar en ella.
      */
     public void eliminar(int posicion) {
-        lecturas[posicion] = null;
+        if (posicion < 0 || posicion >= cantidad) {
+            return;
+        }
+
+        for (int i = posicion; i < cantidad - 1; i++) {
+            lecturas[i] = lecturas[i + 1];
+        }
+
+        lecturas[cantidad - 1] = null;
+        cantidad--;
     }
 
     /**
@@ -68,6 +77,12 @@ public class RepositorioLecturas {
      * TODO 1: implementar. Devolver null si no existe.
      */
     public LecturaSensor buscarPorEstacion(String idSensor) {
+        for (int i = 0; i < cantidad; i++) {
+            if (lecturas[i].getIdSensor().equals(idSensor)) {
+                return lecturas[i];
+            }
+        }
+
         return null;
     }
 
@@ -76,6 +91,11 @@ public class RepositorioLecturas {
      * TODO 2: implementar, verificando que la posicion sea valida.
      */
     public void actualizar(int posicion, LecturaSensor nueva) {
+        if (posicion < 0 || posicion >= cantidad) {
+            return;
+        }
+
+        lecturas[posicion] = nueva;
     }
 
     /**
@@ -97,10 +117,16 @@ public class RepositorioLecturas {
      * despues de que alguien llame a eliminar().
      */
     public double promedioPm25() {
+        if (cantidad == 0) {
+            return 0;
+        }
+
         double suma = 0;
+
         for (int i = 0; i < cantidad; i++) {
             suma = suma + lecturas[i].getPm25();
         }
+
         return suma / cantidad;
     }
 }
