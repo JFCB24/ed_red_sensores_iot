@@ -66,9 +66,20 @@ public class AnalizadorMatriz {
      * TODO 3: implementar.
      */
     public int horaMasContaminada() {
-        return -1;
-    }
+        int horaMayor = 0;
+        double mayorPromedio = promedioDeHora(0);
 
+        for (int hora = 1; hora < NUM_HORAS; hora++) {
+            double promedioActual = promedioDeHora(hora);
+
+            if (promedioActual > mayorPromedio) {
+                mayorPromedio = promedioActual;
+                horaMayor = hora;
+            }
+        }
+
+        return horaMayor;
+    }
     /**
      * Imprime la matriz completa. Util para ver los huecos con tus ojos.
      */
