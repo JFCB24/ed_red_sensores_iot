@@ -55,10 +55,28 @@ public class AnalizadorMatriz {
 
     /**
      * Promedio de PM2.5 de una estacion a lo largo del dia.
-     * TODO 2: implementar, con el mismo cuidado del TODO 1.
+     * Implementado ignorando los ceros fantasma (datos faltantes).
      */
     public double promedioDeEstacion(int fila) {
-        return 0;
+        double suma = 0;
+        int contadorValidos = 0;
+
+        for (int columna = 0; columna < NUM_HORAS; columna++) {
+            double valor = pm25PorEstacionHora[fila][columna];
+
+            // Si el valor es mayor a 0, asumimos que es una lectura real y válida.
+            if (valor > 0.0) {
+                suma += valor;
+                contadorValidos++;
+            }
+        }
+
+        // Evitamos división por cero si la estación no tiene ninguna lectura registrada
+        if (contadorValidos == 0) {
+            return 0.0;
+        }
+
+        return suma / contadorValidos;
     }
 
     /**
