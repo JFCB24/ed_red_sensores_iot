@@ -33,8 +33,9 @@ public class RepositorioLecturas {
      */
     public boolean agregar(LecturaSensor lectura) {
         if (cantidad == lecturas.length) {
-            return false;
+            redimensionar();
         }
+
         lecturas[cantidad] = lectura;
         cantidad++;
         return true;
@@ -108,6 +109,13 @@ public class RepositorioLecturas {
      * uno nuevo mas grande y copiar. Piensa cuantas copias implica eso.
      */
     private void redimensionar() {
+        LecturaSensor[] nuevoArreglo = new LecturaSensor[lecturas.length * 2];
+
+        for (int i = 0; i < lecturas.length; i++) {
+            nuevoArreglo[i] = lecturas[i];
+        }
+
+        lecturas = nuevoArreglo;
     }
 
     /**
