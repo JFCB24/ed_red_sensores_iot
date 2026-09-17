@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class IngestaSensores {
 
-    private static final String ARCHIVO = "lecturas_ampliadas.csv";
+    private static final String ARCHIVO = "data/lecturas_ampliadas.csv";
     private static final int CAMPOS_ESPERADOS = 5;
 
     private static int descartadasPorFormato = 0;
