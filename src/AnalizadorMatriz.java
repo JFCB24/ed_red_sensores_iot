@@ -16,9 +16,11 @@ public class AnalizadorMatriz {
     private static final int NUM_HORAS = 24;
 
     private double[][] pm25PorEstacionHora;
+    private boolean[][] tieneDato;
 
     public AnalizadorMatriz() {
         this.pm25PorEstacionHora = new double[NUM_ESTACIONES][NUM_HORAS];
+        this.tieneDato = new boolean[NUM_ESTACIONES][NUM_HORAS];
     }
 
     /**
@@ -35,7 +37,9 @@ public class AnalizadorMatriz {
     public void registrar(LecturaSensor lectura) {
         int fila = indiceDeEstacion(lectura.getIdSensor());
         int columna = lectura.getHora();
+
         pm25PorEstacionHora[fila][columna] = lectura.getPm25();
+        tieneDato[fila][columna] = true;
     }
 
     /**
@@ -47,31 +51,37 @@ public class AnalizadorMatriz {
      */
     public double promedioDeHora(int hora) {
         double suma = 0;
+        int contadorValidos = 0;
+
         for (int fila = 0; fila < NUM_ESTACIONES; fila++) {
-            suma = suma + pm25PorEstacionHora[fila][hora];
+            if (tieneDato[fila][hora]) {
+                suma = suma + pm25PorEstacionHora[fila][hora];
+                contadorValidos++;
+            }
         }
-        return suma / NUM_ESTACIONES;
+
+        if (contadorValidos == 0) {
+            return 0.0;
+        }
+
+        return suma / contadorValidos;
     }
 
     /**
      * Promedio de PM2.5 de una estacion a lo largo del dia.
-     * Implementado ignorando los ceros fantasma (datos faltantes).
+     * Implementado ignorando los datos faltantes.
      */
     public double promedioDeEstacion(int fila) {
         double suma = 0;
         int contadorValidos = 0;
 
         for (int columna = 0; columna < NUM_HORAS; columna++) {
-            double valor = pm25PorEstacionHora[fila][columna];
-
-            // Si el valor es mayor a 0, asumimos que es una lectura real y válida.
-            if (valor > 0.0) {
-                suma += valor;
+            if (tieneDato[fila][columna]) {
+                suma += pm25PorEstacionHora[fila][columna];
                 contadorValidos++;
             }
         }
 
-        // Evitamos división por cero si la estación no tiene ninguna lectura registrada
         if (contadorValidos == 0) {
             return 0.0;
         }
@@ -98,6 +108,7 @@ public class AnalizadorMatriz {
 
         return horaMayor;
     }
+
     /**
      * Imprime la matriz completa. Util para ver los huecos con tus ojos.
      */
@@ -107,11 +118,14 @@ public class AnalizadorMatriz {
             System.out.printf("%7s", String.format("%02d", h));
         }
         System.out.println();
+
         for (int f = 0; f < NUM_ESTACIONES; f++) {
             System.out.printf("EST-%03d ", f + 1);
+
             for (int h = 0; h < NUM_HORAS; h++) {
                 System.out.printf("%7.1f", pm25PorEstacionHora[f][h]);
             }
+
             System.out.println();
         }
     }
