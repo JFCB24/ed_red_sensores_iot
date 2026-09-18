@@ -1,6 +1,3 @@
-Claro. Aquí tienes **todo listo para copiar y pegar** directamente en tu archivo `juanFelipeCastellanosBran.md`:
-
-````markdown
 # Bitacora individual - Semana 02
 
 ## 1. Datos de la actividad
@@ -69,19 +66,6 @@ Por eso fue necesario desplazar las lecturas posteriores una posición hacia la 
 ## 6. Trazado de la solucion
 
 El proceso de eliminación se puede representar de la siguiente manera:
-
-```text
-Antes:
-
-[A] [B] [C] [D]
-       ↑
-    eliminar
-
-
-Después:
-
-[A] [C] [D] [ ]
-````
 
 Primero se toma la posición que se quiere eliminar.
 
